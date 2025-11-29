@@ -1,8 +1,9 @@
+from selenium.webdriver.common.keys import Keys
+
 from page_objects.search.searchProps import SearchProps
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.common.action_chains import ActionChains
 
 class SearchPage(SearchProps):
     def __init__(self, driver):
@@ -10,38 +11,49 @@ class SearchPage(SearchProps):
         self.wait = WebDriverWait(driver, 10)
 
     def enter_search_text(self, search_text):
-        """Click → clear → type into search bar"""
-        bar = self.wait.until(EC.element_to_be_clickable(self.search_bar))
-        bar.click()
+
+        bar = self.wait.until(EC.element_to_be_clickable(self.fill_search_bar))
         bar.clear()
         bar.send_keys(search_text)
+        return bar
 
-    # def select_suggestion(self, suggestion_text):
-    #     """Select an item from autosuggestions dropdown (if present)."""
+    def select_first_suggestion(self):
+        suggestions = self.suggestions_list
+
+        suggestions[0].click()
+
+
+    # def select_suggestion_by_keyword(self, keyword, timeout=10):
+
+    #     wait = WebDriverWait(self.driver, timeout)
     #
-    #     try:
-    #         suggestions = self.autosuggestions  # defined in props
-    #     except:
+    #     def find_and_click(driver):
+    #         # Re-fetch suggestions
+    #         suggestions = self.suggestions_list
+    #         for s in suggestions:
+    #             if keyword.lower() in s.text.strip().lower():
+    #                 s.click()
+    #                 return True
     #         return False
     #
-    #     for item in suggestions:
-    #         if item.text.strip() == suggestion_text:
-    #             item.click()
-    #             return True
-    #
-    #     return False
-    #
-    # def search_product(self, product_name, suggestion_to_select=None):
-    #     """
-    #     High-level search function:
-    #     - Type in search bar
-    #     - Optionally pick a suggestion
-    #     """
-    #     self.enter_search_text(product_name)
-    #
-    #     if not product_name.strip():
-    #         print("Empty search text")
-    #         return
-    #
-    #     if suggestion_to_select:
-    #         self.select_suggestion(suggestion_to_select)
+    #     wait.until(find_and_click)
+
+# def search_product(self, text, suggestion_to_select=None):
+#     """
+#     High-level search method:
+#     - Type text in the search bar
+#     - If suggestion_to_select is given, pick that suggestion
+#     - Otherwise, press Enter
+#     """
+#     bar = self.wait.until(EC.element_to_be_clickable(self.fill_search_bar))
+#     bar.click()
+#     bar.clear()
+#     bar.send_keys(text)
+#
+#     if suggestion_to_select:
+#         for item in self.suggestions_list:
+#             if item.text.strip() == suggestion_to_select:
+#                 item.click()
+#                 return  # Stop after clicking the suggestion
+#     else:
+#         bar.send_keys(Keys.ENTER)

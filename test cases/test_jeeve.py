@@ -1,15 +1,60 @@
 import time
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from page_objects.CartPage import CartPage
+from page_objects.product.ProductPage import ProductPage
+from page_objects.search.searchPage import SearchPage
+from setup.basetest import BaseTest
+from selenium.webdriver.common.keys import Keys
 
 
-def test_jeeve():
-    chrome_options = Options()
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.maximize_window()
-    driver.get("https://jeevee.com/")
+class TestLogin(BaseTest):
+    def test_login(self):
 
-    time.sleep(5)
+        search = SearchPage(self.driver)
+        product = ProductPage(self.driver)
+        cart = CartPage(self.driver)
 
-    driver.quit()
+
+        # direct_search= search.enter_search_text("pilgrim moisturiser") # this function returns the search text
+        # direct_search.send_keys(Keys.ENTER)
+        # time.sleep(5)
+        #
+        # product.open_product_page()
+        # time.sleep(2)
+        #
+        # cart.add_to_cart_from_product_page()
+        # time.sleep(2)
+
+        # self.open_url("https://jeevee.com/")
+
+        # direct_search= search.enter_search_text("mamaearth sunscreen")
+        # direct_search.send_keys(Keys.ENTER)
+        # time.sleep(5)
+        #
+        # product.open_product_page()
+        # time.sleep(2)
+        # cart.add_to_cart_from_product_page()
+        # time.sleep(5)
+
+        # self.open_url("https://jeevee.com")
+
+        # search.enter_search_text("lip balm")
+        # search.select_first_suggestion()
+        # self.move_mouse_away()
+        # time.sleep(5)
+        #
+        # product.open_product_page()
+        # time.sleep(2)
+        # cart.add_to_cart_from_product_page()
+        # time.sleep(5)
+
+
+        search.enter_search_text("aqualogica face wash")
+        search.select_suggestion_by_keyword("aqualogica")
+        self.move_mouse_away() #since the cursor obstructed the page
+        time.sleep(5)
+
+        product.open_product_page()
+        time.sleep(2)
+        cart.add_to_cart_from_product_page()
+        time.sleep(5)

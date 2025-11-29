@@ -15,3 +15,4 @@ class LoginPage(LoginProps):
         self.mobile_num.send_keys(mobile_number)
         self.password.send_keys(password)
         self.sign_in_button.click()
+
