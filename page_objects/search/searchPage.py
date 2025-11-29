@@ -23,20 +23,19 @@ class SearchPage(SearchProps):
         suggestions[0].click()
 
 
-    # def select_suggestion_by_keyword(self, keyword, timeout=10):
+    def select_suggestion_by_keyword(self, keyword, timeout=10):
+        wait = WebDriverWait(self.driver, timeout)
 
-    #     wait = WebDriverWait(self.driver, timeout)
-    #
-    #     def find_and_click(driver):
-    #         # Re-fetch suggestions
-    #         suggestions = self.suggestions_list
-    #         for s in suggestions:
-    #             if keyword.lower() in s.text.strip().lower():
-    #                 s.click()
-    #                 return True
-    #         return False
-    #
-    #     wait.until(find_and_click)
+        def find_and_click(driver):
+            # Re-fetch suggestions
+            suggestions = self.suggestions_list
+            for s in suggestions:
+                if keyword.lower() in s.text.strip().lower():
+                    s.click()
+                    return True
+            return False
+
+        wait.until(find_and_click)
 
 # def search_product(self, text, suggestion_to_select=None):
 #     """
