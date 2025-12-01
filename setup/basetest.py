@@ -52,3 +52,17 @@ class BaseTest:
     def open_url(self, url):
         self.driver.get(url)
 
+    def click_element_safe(driver, element, overlay_selector=None, retries=5):
+        for _ in range(retries):
+            try:
+                ActionChains(driver).move_to_element(element).click().perform()
+                return True
+            except ElementClickInterceptedException:
+                if overlay_selector:
+                    try:
+                        WebDriverWait(driver, 2).until(EC.invisibility_of_element_located(overlay_selector))
+                    except:
+                        pass
+                time.sleep(0.5)
+        # final attempt
+        ActionChains(driver).move_to_element(element).click().perform()

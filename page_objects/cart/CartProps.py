@@ -13,44 +13,11 @@ class CartProps(CartLocators):
     def add_from_product_page(self):
         return self.driver.find_element(*CartLocators.add_to_cart_from_product_page)
 
-    # @property
-    # def cart_button(self):
-    #     # return self.driver.find_element(*CartLocators.cart_page_btn)
-    #     # wait for overlay to disappear (an invisible element was obstructing the button)
-    #     WebDriverWait(self.driver, 10).until(
-    #         EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.common_backdrop__wapXy"))
-    #     )
-    #
-    #     return WebDriverWait(self.driver, 10).until(
-    #         EC.element_to_be_clickable(CartLocators.cart_page_btn)
-    #         # no * because it unpacks cart_page_btn (By, locator) (we need a single tuple)
-    #     )
-
     @property
     def cart_button(self):
-        overlay_selector = (By.CSS_SELECTOR, "div.common_backdrop__wapXy")
-
-        # Wait for overlay to disappear
-        WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(overlay_selector))
-
-        # Wait for cart button to be clickable
-        btn = WebDriverWait(self.driver, 10).until(
+        btn= WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.cart_page_btn)
         )
-
-        # Scroll to the button
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
-
-        # Use ActionChains to click safely, retry up to 3 times if intercepted
-        for _ in range(3):
-            try:
-                ActionChains(self.driver).move_to_element(btn).click().perform()
-                return btn
-            except ElementClickInterceptedException:
-                WebDriverWait(self.driver, 1).until(EC.invisibility_of_element_located(overlay_selector))
-
-        # Final attempt without exceptions
-        ActionChains(self.driver).move_to_element(btn).click().perform()
         return btn
 
 
@@ -70,3 +37,26 @@ class CartProps(CartLocators):
         ActionChains(self.driver).move_to_element(btn).perform()
         time.sleep(2)
         return btn
+
+    def remove(self):
+        # wait for button to be clickable
+        return WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(CartLocators.remove_btn_locator)
+        )
+
+    def confirm_remove(self):
+        return WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(CartLocators.confirm_remove_locator)
+        )
+
+    @property
+    def increase_quantity(self):
+        return WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(CartLocators.incr_qty_locator)
+        )
+
+    @property
+    def decrease_quantity(self):
+        return WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(CartLocators.decr_qty_locator)
+        )

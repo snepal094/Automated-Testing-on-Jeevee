@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 
 class TestCart(BaseTest):
 
-    def test_search_and_add_to_cart_from_product_page(self):
+    def search_and_add_to_cart_from_product_page(self):
 
         search = SearchPage(self.driver)
         product = ProductPage(self.driver)
@@ -29,16 +29,25 @@ class TestCart(BaseTest):
     # def add_to_cart_from_home_page(self):
     #     pass
 
-    def test_open_cart_page(self):
+    def open_cart_page(self):
         cart = CartPage(self.driver)
 
         cart.open_cart_page()
         time.sleep(3)
-        cart.checkout()
 
-    def test_checkout(self):
+    def checkout(self):
         cart = CartPage(self.driver)
 
         cart.open_cart_page()
         cart.checkout()
+        time.sleep(3)
+
+    def test_cart_item(self):
+        cart = CartPage(self.driver)
+        time.sleep(10)
+        cart.open_cart_page()
+        time.sleep(3)
+        # cart.remove_from_cart()
+        # cart.increase_item_count()
+        cart.decrease_item_count()
         time.sleep(3)
