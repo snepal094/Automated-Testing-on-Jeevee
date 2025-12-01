@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 class LoginLocators:
+
     # profile_icon = (By.XPATH, "//div[@class='user_greetings__29Sj5 md:block relative']")
     # BUT — usually Tailwind classes and Webpack-generated classes may change.
     # Also the order of classes can change, so exact match is often fragile.
@@ -9,9 +10,6 @@ class LoginLocators:
 
     profile = (By.XPATH, "//div[contains(@class, 'user_greetings__')]")
 
-    # login = (By.XPATH, "//div[contains(@class, 'user_greetings__')]//div[text()='Login']")
-
-    # (By.XPATH, "//div[contains(@class, 'cursor-pointer')]//div[text()='Login']")
     login = (By.XPATH, "//div[contains(@class, 'cursor-pointer')]//div[text()='Login']/..")
 
     mobile_num_input = (By.XPATH, "//input[@name='phone']")

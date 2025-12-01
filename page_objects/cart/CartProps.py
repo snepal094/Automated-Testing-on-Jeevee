@@ -1,6 +1,5 @@
 import time
 
-from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 

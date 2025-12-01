@@ -27,7 +27,7 @@ class SearchPage(SearchProps):
         wait = WebDriverWait(self.driver, timeout)
 
         def find_and_click(driver):
-            # Re-fetch suggestions
+            # Refetch suggestions
             suggestions = self.suggestions_list
             for s in suggestions:
                 if keyword.lower() in s.text.strip().lower():
@@ -36,23 +36,3 @@ class SearchPage(SearchProps):
             return False
 
         wait.until(find_and_click)
-
-# def search_product(self, text, suggestion_to_select=None):
-#     """
-#     High-level search method:
-#     - Type text in the search bar
-#     - If suggestion_to_select is given, pick that suggestion
-#     - Otherwise, press Enter
-#     """
-#     bar = self.wait.until(EC.element_to_be_clickable(self.fill_search_bar))
-#     bar.click()
-#     bar.clear()
-#     bar.send_keys(text)
-#
-#     if suggestion_to_select:
-#         for item in self.suggestions_list:
-#             if item.text.strip() == suggestion_to_select:
-#                 item.click()
-#                 return  # Stop after clicking the suggestion
-#     else:
-#         bar.send_keys(Keys.ENTER)

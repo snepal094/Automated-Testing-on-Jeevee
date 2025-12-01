@@ -1,3 +1,5 @@
+import logging
+
 from page_objects.login.loginProps import LoginProps
 
 
@@ -15,4 +17,5 @@ class LoginPage(LoginProps):
         self.mobile_num.send_keys(mobile_number)
         self.password.send_keys(password)
         self.sign_in_button.click()
+        logging.info("logging in...")
 

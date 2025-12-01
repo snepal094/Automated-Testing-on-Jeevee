@@ -17,7 +17,6 @@ class TestCart(BaseTest):
         cart = CartPage(self.driver)
 
         direct_search= search.enter_search_text("mamaearth sunscreen")
-        logging.info('searching........')
         direct_search.send_keys(Keys.ENTER)
         time.sleep(5)
 
@@ -26,8 +25,8 @@ class TestCart(BaseTest):
         cart.add_to_cart_from_product_page()
         time.sleep(5)
 
-    # def add_to_cart_from_home_page(self):
-    #     pass
+    def add_to_cart_from_home_page(self):
+        pass
 
     def open_cart_page(self):
         cart = CartPage(self.driver)
@@ -42,12 +41,23 @@ class TestCart(BaseTest):
         cart.checkout()
         time.sleep(3)
 
-    def test_cart_item(self):
+    def test_remove_cart_item(self):
         cart = CartPage(self.driver)
-        time.sleep(10)
         cart.open_cart_page()
-        time.sleep(3)
-        # cart.remove_from_cart()
-        # cart.increase_item_count()
+        time.sleep(5)
+        cart.remove_from_cart()
+        time.sleep(5)
+
+    def test_increase_item_count(self):
+        cart = CartPage(self.driver)
+        cart.open_cart_page()
+        time.sleep(5)
+        cart.increase_item_count()
+        time.sleep(5)
+
+    def test_decrease_item_count(self):
+        cart = CartPage(self.driver)
+        cart.open_cart_page()
+        time.sleep(5)
         cart.decrease_item_count()
-        time.sleep(3)
+        time.sleep(5)
