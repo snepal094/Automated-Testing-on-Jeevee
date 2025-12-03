@@ -10,11 +10,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class CartProps(CartLocators):
+    toast_locator = (
+        By.XPATH,
+        "//div[contains(@class,'modal') and .//div[contains(.,'Processing')]]"
+    ) #the . inside contains(., 'Processing') matches any descendant text, not just direct text node
+      # (the text 'Processing' is inside nested divs)
+
     @property
     def add_from_product_page(self):
         return WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.add_to_cart_from_product_page)
         )
+
 
     @property
     def cart_button(self):
@@ -23,25 +30,25 @@ class CartProps(CartLocators):
             EC.invisibility_of_element_located((By.CLASS_NAME, "common_backdrop__wapXy"))
         )
 
-        btn= WebDriverWait(self.driver, 10).until(
+        return WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.cart_page_btn)
         )
 
-        # retry click until it succeeds
-        timeout = time.time() + 10 # now + 10s
-        # So timeout is the latest time we’ll keep retrying before giving up.
-
-        while True: # ends when either clicking the button succeeds, or the timeout limit is reached
-            try:
-                btn.click()
-                break
-            except ElementClickInterceptedException: # if smth is blocking the button
-                # catches this execption so that we can retry without the program crashing
-                if time.time() > timeout:
-                    raise TimeoutException("Cart button click blocked by overlay after 10s")
-                # time.sleep(0.2) # wait 0.2s before retries to avoid rapid clicking
-
-        return btn
+        # # retry click until it succeeds
+        # timeout = time.time() + 10 # now + 10s
+        # # So timeout is the latest time we’ll keep retrying before giving up.
+        #
+        # while True: # ends when either clicking the button succeeds, or the timeout limit is reached
+        #     try:
+        #         btn.click()
+        #         break
+        #     except ElementClickInterceptedException: # if smth is blocking the button
+        #         # catches this execption so that we can retry without the program crashing
+        #         if time.time() > timeout:
+        #             raise TimeoutException("Cart button click blocked by overlay after 10s")
+        #         # time.sleep(0.2) # wait 0.2s before retries to avoid rapid clicking
+        #
+        # return btn
 
 
     @property
@@ -103,11 +110,33 @@ class CartProps(CartLocators):
 
         return btn
 
+    # @property
+    # def increase_quantity(self):
+    #     return WebDriverWait(self.driver, 10).until(
+    #         EC.presence_of_element_located(CartLocators.incr_qty_locator)
+    #     )
+
     @property
     def increase_quantity(self):
-        return WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(CartLocators.incr_qty_locator)
+        """
+        Clicks the increment button and waits for the 'Processing...' toast to disappear.
+        """
+        # Wait for the increment button to be clickable
+        incr_btn = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(CartLocators.incr_qty_locator)
         )
+
+        return incr_btn
+        # logging.info("Clicked increment button")
+
+        # # Wait for toast to disappear
+        # try:
+        #     WebDriverWait(self.driver, 15).until(
+        #         EC.invisibility_of_element_located(CartLocators.toast_locator)
+        #     )
+        #     logging.info("Processing toast disappeared, item count updated")
+        # except:
+        #     logging.warning("Processing toast did not appear or already gone")
 
     @property
     def decrease_quantity(self):

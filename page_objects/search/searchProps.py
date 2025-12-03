@@ -10,7 +10,7 @@ class SearchProps(SearchLocators):
 
     @property
     def container(self):
-        # Wait for the container to be visible first
+        # Wait for the suggestions container to be visible first
         return WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(SearchLocators.container)
         )

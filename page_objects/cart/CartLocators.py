@@ -14,7 +14,11 @@ class CartLocators:
     confirm_remove_locator = (By.XPATH,
                           "//button[contains(@class,'btn') and contains(@class,'btn-secondary') and text()='Remove']")
 
+    toast_locator = (
+        By.XPATH,
+        "//div[contains(@class,'modal') and .//div[contains(text(),'Processing')]]"
+    )
+
     incr_qty_locator= (By.CSS_SELECTOR, "div.rounded-full.bg-tPrimary-300.p-1.cursor-pointer:last-of-type")
 
     decr_qty_locator= (By.CSS_SELECTOR, "div.rounded-full.bg-tPrimary-300.p-1.cursor-pointer")
-
