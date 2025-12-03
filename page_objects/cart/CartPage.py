@@ -20,8 +20,8 @@ class CartPage(CartProps):
         logging.info("checking out...")
 
     def remove_from_cart(self):
-        self.remove().click()
-        self.confirm_remove().click()
+        self.remove.click()
+        self.confirm_remove.click()
         logging.info("removed item from cart")
 
     def increase_item_count(self):

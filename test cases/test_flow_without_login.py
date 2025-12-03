@@ -3,7 +3,7 @@ import time
 from selenium.webdriver import Keys
 
 from page_objects.cart.CartPage import CartPage
-from page_objects.product.ProductPage import ProductPage
+from page_objects.product.productPage import ProductPage
 from page_objects.search.searchPage import SearchPage
 from setup.basetest import BaseTest
 
@@ -16,11 +16,12 @@ class TestWithoutLogin(BaseTest):
 
         direct_search= search.enter_search_text("mamaearth sunscreen")
         direct_search.send_keys(Keys.ENTER)
-        time.sleep(5)
+        self.move_mouse_away()
+        # time.sleep(5)
 
         product.open_product_page()
-        time.sleep(2)
+        # time.sleep(2)
         cart.add_to_cart_from_product_page()
-        time.sleep(5)
+        # time.sleep(5)
 
         print("Login Pop Up appeared")

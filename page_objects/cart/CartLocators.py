@@ -17,3 +17,4 @@ class CartLocators:
     incr_qty_locator= (By.CSS_SELECTOR, "div.rounded-full.bg-tPrimary-300.p-1.cursor-pointer:last-of-type")
 
     decr_qty_locator= (By.CSS_SELECTOR, "div.rounded-full.bg-tPrimary-300.p-1.cursor-pointer")
+

@@ -1,12 +1,19 @@
+import json
+
 import pytest
 
 import time
 
-
 from page_objects.login.loginPage import LoginPage
 from setup.basetest import BaseTest
 
-users= [("9849956051", "Jeevee@123"), ("9843368866", "Ouw7Y1zR-b-DhGs"), ("0987654321", "invalid-password")]
+
+creds_path = r"C:\Users\snepal\PycharmProjects\QA-Project\creds\creds.json"
+
+with open(creds_path, 'r') as f:
+    creds = json.load(f)
+
+users = [(u['mobile_num'], u['password']) for u in creds['users']]
 
 class TestUsers(BaseTest):
     @pytest.mark.parametrize("username,password", users)
@@ -17,4 +24,4 @@ class TestUsers(BaseTest):
         login.login_page()
         login.sign_in(username, password)
 
-        time.sleep(10)
+        # time.sleep(10)

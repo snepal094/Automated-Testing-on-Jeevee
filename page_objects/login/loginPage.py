@@ -14,8 +14,9 @@ class LoginPage(LoginProps):
         self.login_icon.click()
 
     def sign_in(self, mobile_number, password):
+        logging.info("logging in...")
         self.mobile_num.send_keys(mobile_number)
         self.password.send_keys(password)
         self.sign_in_button.click()
-        logging.info("logging in...")
+        logging.info("logged in")
 
