@@ -47,6 +47,7 @@ class CartProps(CartLocators):
         time.sleep(2)
         return btn
 
+
     @property
     def remove(self):
 
@@ -58,6 +59,7 @@ class CartProps(CartLocators):
         return WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.remove_btn_locator)
         )
+
 
     @property
     def confirm_remove(self):
@@ -76,11 +78,13 @@ class CartProps(CartLocators):
         )
         return incr_btn
 
+
     @property
     def decrease_quantity(self):
         return WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located(CartLocators.decr_qty_locator)
         )
+
 
     def manage_toast(self):
         # wait for toast to appear
@@ -99,4 +103,3 @@ class CartProps(CartLocators):
             logging.info("Processing toast disappeared, item count updated")
         except:
             logging.warning("Processing toast did not appear or already gone")
-

@@ -37,7 +37,6 @@ class TestWithoutLogin(BaseTest):
 
         direct_search= search.enter_search_text("mamaearth sunscreen")
         direct_search.send_keys(Keys.ENTER)
-        self.move_mouse_away()
         # time.sleep(5)
 
         product.open_product_page()
