@@ -13,20 +13,26 @@ class TestSearch(BaseTest):
 
         direct_search= search.enter_search_text("pilgrim moisturiser") # this function returns the search text
         direct_search.send_keys(Keys.ENTER)
-        # time.sleep(5)
+        time.sleep(5)
 
     def test_search_first_suggestion(self):
         search = SearchPage(self.driver)
 
         search.enter_search_text("lip balm")
         search.select_first_suggestion()
-        self.move_mouse_away()
-        # time.sleep(5)
+        time.sleep(10)
 
     def test_search_relevant_suggestion(self):
         search = SearchPage(self.driver)
 
         search.enter_search_text("face mask")
+        time.sleep(2)
         search.select_suggestion_by_keyword("mask")
-        self.move_mouse_away() #since the cursor obstructed the page (expanded the categories section)
-        # time.sleep(5)
+        time.sleep(5)
+
+    def test_invalid_search(self):
+        search = SearchPage(self.driver)
+
+        search_term = search.enter_search_text("qwerty")
+        search_term.send_keys(Keys.ENTER)
+        time.sleep(5)

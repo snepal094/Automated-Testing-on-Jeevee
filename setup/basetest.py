@@ -1,11 +1,8 @@
 import json
 import logging
-from selenium.webdriver.common.action_chains import ActionChains
-
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
 
 
 from page_objects.login.loginPage import LoginPage
@@ -27,7 +24,6 @@ class BaseTest:
             "profile.password_manager_enabled": False,
             "profile.password_manager_leak_detection_enabled": False
 
-
         }
         chrome_options.add_experimental_option("prefs",prefs)
 
@@ -39,7 +35,7 @@ class BaseTest:
         driver = webdriver.Chrome(options=chrome_options)
         self.driver = driver
         self.driver.maximize_window()
-        self.open_url("https://jeevee.com/")
+        self.open_url(self.creds["url"])
 
 
         # login = LoginPage(self.driver)
@@ -48,20 +44,9 @@ class BaseTest:
         # # time.sleep(5)
         # login.login_page()
         # # time.sleep(5)
-        # login.sign_in('9849956051', 'Jeevee@123')
+        # login.sign_in('', '')
         # # time.sleep(5)
 
-    def move_mouse_away(self):
-        body = self.driver.find_element(By.TAG_NAME, "body") # (0, 0) = top left corner
-
-        window_width = self.driver.execute_script("return window.innerWidth")
-        window_height = self.driver.execute_script("return window.innerHeight")
-
-        actions = ActionChains(self.driver)
-        # move_to_element_by_offset takes the mouse to the absolute position,
-        # rather than a position relative to the current position like move_by_offset
-        actions.move_to_element_with_offset(body, 1, 1).perform()
-        # 1 and 1 so that the mouse is only almost at the corner
 
     def teardown_method(self):
         self.driver.quit()

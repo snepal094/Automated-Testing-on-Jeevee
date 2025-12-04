@@ -8,5 +8,5 @@ class ProductPage(ProductProps):
         self.driver = driver
 
     def open_product_page(self):
-        logging.info("Opening product page")
+        logging.info("Opening product page...")
         self.product.click()

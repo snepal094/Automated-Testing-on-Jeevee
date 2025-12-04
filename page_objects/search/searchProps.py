@@ -17,11 +17,18 @@ class SearchProps(SearchLocators):
 
     @property
     def suggestions_list(self):
-        # Wait for the container first
+        # Get the container element first
         container = self.container
-        # Then wait until at least 1 suggestion is visible inside the container
-        suggestions = WebDriverWait(container, 10).until(
-            lambda c: c.find_elements(*SearchLocators.suggestions_list)
-            if c.find_elements(*SearchLocators.suggestions_list) else False
-        )
+
+        # Define a function to wait for at least one suggestion
+        def check_suggestions(c):
+            elements = c.find_elements(*SearchLocators.suggestions_list)
+            if elements:
+                return elements  # Return the list if there is at least one element
+            else:
+                return False  # Keep waiting if no elements found
+
+        # Wait up to 10 seconds for at least one suggestion
+        suggestions = WebDriverWait(container, 10).until(check_suggestions)
+
         return suggestions

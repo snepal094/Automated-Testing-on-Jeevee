@@ -16,8 +16,9 @@ class CartLocators:
 
     toast_locator = (
         By.XPATH,
-        "//div[contains(@class,'modal') and .//div[contains(text(),'Processing')]]"
-    )
+        "//div[contains(@class,'modal') and .//div[contains(.,'Processing')]]"
+    ) #the . inside contains(., 'Processing') matches any descendant text, not just direct text node
+      # (the text 'Processing' is inside nested divs)
 
     incr_qty_locator= (By.CSS_SELECTOR, "div.rounded-full.bg-tPrimary-300.p-1.cursor-pointer:last-of-type")
 

@@ -28,7 +28,7 @@ class SearchPage(SearchProps):
     def select_suggestion_by_keyword(self, keyword, timeout=10):
         wait = WebDriverWait(self.driver, timeout)
 
-        def find_and_click(drive):
+        def find_and_click(driver):
             # Refetch suggestions
             suggestions = self.suggestions_list
             for s in suggestions:

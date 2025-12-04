@@ -20,6 +20,7 @@ class CartPage(CartProps):
         self.add_from_product_page.click()
 
     def open_cart_page(self):
+        logging.info("opening cart page...")
 
         # retry click until it succeeds
         timeout = time.time() + 10 # now + 10s
@@ -33,10 +34,7 @@ class CartPage(CartProps):
                 # catches this execption so that we can retry without the program crashing
                 if time.time() > timeout:
                     raise TimeoutException("Cart button click blocked by overlay after 10s")
-                # time.sleep(0.2) # wait 0.2s before retries to avoid rapid clicking
-
-        # self.cart_button.click()
-        # logging.info("opening cart page...")
+                time.sleep(0.2) # wait 0.2s before retries to avoid rapid clicking
 
     def checkout(self):
         self.checkout_button.click()
@@ -48,25 +46,12 @@ class CartPage(CartProps):
         logging.info("removed item from cart")
 
     def increase_item_count(self):
+        # Clicks the increment button and waits for the 'Processing...' toast to disappear.
         self.increase_quantity.click()
+        self.manage_toast()
 
-        # wait for toast to appear
-        try:
-            WebDriverWait(self.driver, 5).until(
-                EC.presence_of_element_located(CartProps.toast_locator)
-            )
-        except:
-            logging.info("Processing toast did not appear")
-
-        # Wait for toast to disappear
-        try:
-            WebDriverWait(self.driver, 15).until(
-                EC.invisibility_of_element_located(CartProps.toast_locator)
-            )
-            logging.info("Processing toast disappeared, item count updated")
-        except:
-            logging.warning("Processing toast did not appear or already gone")
 
     def decrease_item_count(self):
         self.decrease_quantity.click()
-        logging.info("item count decreased")
+        self.manage_toast()
+

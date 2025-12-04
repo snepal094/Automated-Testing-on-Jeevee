@@ -1,7 +1,6 @@
 import logging
 import time
 
-from selenium.common import ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -10,11 +9,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class CartProps(CartLocators):
-    toast_locator = (
-        By.XPATH,
-        "//div[contains(@class,'modal') and .//div[contains(.,'Processing')]]"
-    ) #the . inside contains(., 'Processing') matches any descendant text, not just direct text node
-      # (the text 'Processing' is inside nested divs)
 
     @property
     def add_from_product_page(self):
@@ -34,28 +28,12 @@ class CartProps(CartLocators):
             EC.element_to_be_clickable(CartLocators.cart_page_btn)
         )
 
-        # # retry click until it succeeds
-        # timeout = time.time() + 10 # now + 10s
-        # # So timeout is the latest time we’ll keep retrying before giving up.
-        #
-        # while True: # ends when either clicking the button succeeds, or the timeout limit is reached
-        #     try:
-        #         btn.click()
-        #         break
-        #     except ElementClickInterceptedException: # if smth is blocking the button
-        #         # catches this execption so that we can retry without the program crashing
-        #         if time.time() > timeout:
-        #             raise TimeoutException("Cart button click blocked by overlay after 10s")
-        #         # time.sleep(0.2) # wait 0.2s before retries to avoid rapid clicking
-        #
-        # return btn
-
 
     @property
     def checkout_button(self):
 
         # wait for toast to disappear ('Logged In Successfully')
-        logging.info('Processing Checkout')
+        logging.info('Processing Checkout...')
         WebDriverWait(self.driver, 10).until(
             EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.Toastify__toast-container"))
         )
@@ -87,56 +65,16 @@ class CartProps(CartLocators):
         btn = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.confirm_remove_locator)
         )
-
-        # wait until overlay disappears, if any
-        try:
-            WebDriverWait(self.driver, 10).until(
-                EC.invisibility_of_element_located((By.CLASS_NAME, "common_backdrop__wapXy"))
-            )
-        except TimeoutException:
-            logging.warning("Overlay still present, retrying click...")
-
-        # retry clicking until it succeeds or timeout
-        timeout = time.time() + 10  # try for 10 seconds
-        while True:
-            try:
-                btn.click()
-                logging.info("Item removed from cart successfully")
-                break
-            except ElementClickInterceptedException:
-                if time.time() > timeout:
-                    raise TimeoutException("Confirm remove button blocked by overlay after 10s")
-                time.sleep(0.2)  # wait before retrying
-
         return btn
 
-    # @property
-    # def increase_quantity(self):
-    #     return WebDriverWait(self.driver, 10).until(
-    #         EC.presence_of_element_located(CartLocators.incr_qty_locator)
-    #     )
 
     @property
     def increase_quantity(self):
-        """
-        Clicks the increment button and waits for the 'Processing...' toast to disappear.
-        """
         # Wait for the increment button to be clickable
         incr_btn = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(CartLocators.incr_qty_locator)
         )
-
         return incr_btn
-        # logging.info("Clicked increment button")
-
-        # # Wait for toast to disappear
-        # try:
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.invisibility_of_element_located(CartLocators.toast_locator)
-        #     )
-        #     logging.info("Processing toast disappeared, item count updated")
-        # except:
-        #     logging.warning("Processing toast did not appear or already gone")
 
     @property
     def decrease_quantity(self):
@@ -144,21 +82,21 @@ class CartProps(CartLocators):
             EC.presence_of_element_located(CartLocators.decr_qty_locator)
         )
 
-# Instead of handling this in every property, you can wrap click actions in a helper like:
+    def manage_toast(self):
+        # wait for toast to appear
+        try:
+            WebDriverWait(self.driver, 5).until(
+                EC.presence_of_element_located(CartLocators.toast_locator)
+            )
+        except:
+            logging.info("Processing toast did not appear")
 
-# def safe_click(self, locator):
-#     WebDriverWait(self.driver, 10).until(
-#         EC.invisibility_of_element_located((By.CLASS_NAME, "common_backdrop__wapXy"))
-#     )
-#     element = WebDriverWait(self.driver, 10).until(
-#         EC.presence_of_element_located(locator)
-#     )
-#     timeout = time.time() + 10
-#     while True:
-#         try:
-#             element.click()
-#             break
-#         except ElementClickInterceptedException:
-#             if time.time() > timeout:
-#                 raise
-#             time.sleep(0.2)
+        # Wait for toast to disappear
+        try:
+            WebDriverWait(self.driver, 15).until(
+                EC.invisibility_of_element_located(CartLocators.toast_locator)
+            )
+            logging.info("Processing toast disappeared, item count updated")
+        except:
+            logging.warning("Processing toast did not appear or already gone")
+

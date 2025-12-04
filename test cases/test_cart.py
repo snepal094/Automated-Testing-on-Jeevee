@@ -39,7 +39,7 @@ class TestCart(BaseTest):
         login.login_page()
         login.sign_in(self.creds["mobile_num"], self.creds["password"])
         cart.open_cart_page()
-        # time.sleep(3)
+        time.sleep(3)
 
     def test_checkout(self):
         login = LoginPage(self.driver)
@@ -64,7 +64,7 @@ class TestCart(BaseTest):
         cart.open_cart_page()
         # time.sleep(5)
         cart.remove_from_cart()
-        # time.sleep(5)
+        time.sleep(2)
 
     def test_increase_item_count(self):
         login = LoginPage(self.driver)
@@ -74,9 +74,8 @@ class TestCart(BaseTest):
         login.login_page()
         login.sign_in(self.creds["mobile_num"], self.creds["password"])
         cart.open_cart_page()
-        # time.sleep(5)
         cart.increase_item_count()
-        # time.sleep(5)
+        time.sleep(2)
 
     def test_decrease_item_count(self):
         login = LoginPage(self.driver)
@@ -88,4 +87,4 @@ class TestCart(BaseTest):
         cart.open_cart_page()
         # time.sleep(5)
         cart.decrease_item_count()
-        # time.sleep(5)
+        time.sleep(2)
